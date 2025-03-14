@@ -14,7 +14,7 @@ A responsive web app to visualize the speed of sorting algorithms.
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/vertosofficial/sort-speed.git
+   git clone https://github.com/vertosofficial/SortSpeed.git
    ```
 2. **Open in the browser**:
    ```bash

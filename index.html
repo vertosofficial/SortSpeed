@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>SortSpeed</title>
+  <link href="./css/style.css" rel="stylesheet" type="text/css"/>
+  <link rel="stylesheet" type="text/css" href="https://jsxgraph.uni-bayreuth.de/distrib/jsxgraph.css" />
+  <script type="text/javascript" src="https://jsxgraph.uni-bayreuth.de/distrib/jsxgraphcore.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/regression/2.0.1/regression.js"
+    integrity="sha512-PHHRPMxJK1xGYLQPv9FoDbCF2X23Ao1lMAD52oLY9TBW033s4zwIXl5JQBGlfI2iOx3W1qP3LAS/MMv5Ttj0aQ=="
+    crossorigin="anonymous">
+    </script>
+</head>
+
+<body>
+  <div class="LeftSide">
+    <h1>Time</h1>
+    <div class="Neum">
+      <div id="timebox" class="jxgbox" style="width:500px; height:500px;"></div>
+    </div>
+  </div>
+  <div class="RightSide">
+    <h1>Memory</h1>
+    <div class="Neum">
+      <div id="membox" class="jxgbox" style="width:500px; height:500px;"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var time_board = JXG.JSXGraph.initBoard('timebox', {  // Time board config
+      boundingbox: [-100, 1000, 1000, -100],
+      axis: true,
+      zoom: {wheel: true},
+      pan: {enabled: true},
+      showCopyright: false,
+      keepAspectRatio: false
+    });
+    var mem_board = JXG.JSXGraph.initBoard('membox', {  // Memory board config
+      boundingbox: [-100, 100000, 100000, -100],
+      axis: true,
+      zoom: {wheel: true},
+      pan: {enabled: true},
+      showCopyright: false,
+      keepAspectRatio: false
+    });
+
+    var readCnt = 0;   // Random data counter
+    var writeCnt = 0;  // Write data counter
+    const arrHandler = {
+      get: (obj, prop) => {
+        readCnt++;
+        return obj[prop];
+      },
+      set: (obj, prop, val) => {
+        writeCnt++;
+        obj[prop] = val;
+        return true;
+      },
+      deleteProperty: (obj, prop) => {
+        writeCnt++;
+        delete obj[prop];
+
+        return true;
+      }
+    }
+
+    const A = new Proxy([], arrHandler);
+
+    function zip(a, b) {  // res[i] = [a[i], b[i]]
+      var res = [];
+      for (var i = 0; i < a.length; i++)
+        res.push([a[i], b[i]]);
+
+      return res;
+    }
+
+    const measures = {};
+
+    function time(func, limit = 10000) {
+      var array_size = [];
+      var exec_time = [];
+      var read_oper = [];
+      var write_oper = [];
+      // x.length=0; ty.length=0; rdy.length=0; wry.length=0
+      for (let size = 10; size < limit; size = Math.floor(size * 1.5)) {
+        A.length = 0;
+        while (A.length < size)
+          A.push(Math.floor(Math.random() * 100000));
+        readCnt = 0;
+        writeCnt = 0;
+
+        // Execute function
+        var time_start = performance.now();
+        func(A);
+        var time_end = performance.now();
+
+        array_size.push(size);                 // Actual array size
+        exec_time.push(time_end - time_start)  // Execution time
+        read_oper.push(readCnt);               // Read count
+        write_oper.push(writeCnt);             // Write count
+
+        console.log(`Length=${size}  ${(time_end - time_start).toFixed(2)}ms  Read=${readCnt}  Write=${writeCnt}`);
+        measures[func.name] = {x: [...array_size], ty: [...exec_time], rdy: [...read_oper], wry: [...write_oper]};
+      }
+
+      // Draw graph
+      time_board.create("curve", [array_size, exec_time], {name: func.name, withLabel: true, label: {autoPosition: true, position: 'top'}});
+      mem_board.create("curve", [array_size, read_oper], {name: func.name + "_R", withLabel: true, label: {autoPosition: true, position: 'top'}});
+      mem_board.create("curve", [array_size, write_oper], {name: func.name + "_W", withLabel: true, label: {autoPosition: true, position: 'top'}});
+    }
+
+    function takeFunc(f) {
+      time_board.create("functiongraph", f, {strokeColor: "#a01010"});
+    }
+  </script>
+  <script src="./JavaScript/script.js">
+  </script>
+</body>
+
+</html>

@@ -1,57 +1,54 @@
 // insertionSort [CORMEN]
-function insertionSort(a) {
-  for(j=1; j<a.length; j++) {
-    key = a[j];
+function insertionSort(array) {
+  for(j = 1; j < array.length; j++) {
+    key = array[j];
     i = j-1;
-    while(i > -1 && a[i] > key) {
-      a[i+1] = a[i];
+    while(i > -1 && array[i] > key) {
+      array[i+1] = array[i];
       i = i-1;
     }
-    a[i+1] = key;
+    array[i+1] = key;
   }
 }
-
 //----------------------------------------------------------
 
 // selectionSort (almost) AS DESCRIBED BY Pisanti
-function selectionSort(a) {
-  for(i=0; i<a.length-1; i++) {
-    min = a[i];
+function selectionSort(array) {
+  for(i = 0; i < array.length-1; i++) {
+    min = array[i];
     minIndex = i;
-    for(j=i+1; j<a.length; j++)
-      if(a[j] < min) {
-        min = a[j];
+    for(j = i+1; j < array.length; j++)
+      if(array[j] < min) {
+        min = array[j];
         minIndex = j;
       }
-    temp = a[i];
-    a[i] = a[minIndex];
-    a[minIndex] = temp;
+    temp = array[i];
+    array[i] = array[minIndex];
+    array[minIndex] = temp;
   }
 }
-
 //----------------------------------------------------------
 
 // mergeSort [A more human-friendly version than Cormen’s]
-function merge(a1, a2) {
+function merge(array1, array2) {
   let result = [];
-  let i = 0;
-  let j = 0;
+  let i = 0, j = 0;
 
-  while(i < a1.length && j < a2.length) {
-    if(a1[i] > a2[j]) {
-      result.push(a2[j]);
+  while(i < array1.length && j < array2.length) {
+    if(array1[i] > array2[j]) {
+      result.push(array2[j]);
       j++;
     } else {
-      result.push(a1[i]);
+      result.push(array1[i]);
       i++;
     }
   }
-  while(i < a1.length) {
-    result.push(a1[i]);
+  while(i < array1.length) {
+    result.push(array1[i]);
     i++;
   }
-  while(j < a2.length) {
-    result.push(a2[j]);
+  while(j < array2.length) {
+    result.push(array2[j]);
     j++;
   }
 
@@ -68,31 +65,31 @@ function mergeSort(a) {
   
   return merge(L, R);
 }
-
 //----------------------------------------------------------
 
 // mergeSort -> JavaScript version
-function mergeJS(a1, a2) {
+function mergeJS(array1, array2) {
   let sorted = [];
-  while(a1.length && a2.length) {
-    if(a1[0] < a2[0]) sorted.push(a1.shift());
-    else sorted.push(a2.shift());
+  while(array1.length && array2.length) {
+    if(array1[0] < array2[0]) 
+      sorted.push(array1.shift());
+    else 
+      sorted.push(array2.shift());
   }
 
-  return sorted.concat(a1.slice().concat(a2.slice()));
-};
+  return sorted.concat(array1.slice().concat(array2.slice()));
+}
 
 // a -> does NOT get destroyed [slice]
-function mergeSortJS(a) {
-  if(a.length <= 1) 
-    return a;
-  let q = Math.floor(a.length / 2);
-  let L = mergeSortJS(a.slice(0, q));
-  let R = mergeSortJS(a.slice(-q));
+function mergeSortJS(array) {
+  if(array.length <= 1) 
+    return array;
+  let q = Math.floor(array.length / 2);
+  let L = mergeSortJS(array.slice(0, q));
+  let R = mergeSortJS(array.slice(-q));
 
   return mergeJS(L, R);
-};
-
+}
 //----------------------------------------------------------
 
 // mergeSort [Cormen]
@@ -100,21 +97,21 @@ function mergeSortJS(a) {
 // r: ending index of a, 
 // q: middle index 
 function mergeCormen(a, p, q, r) {
-  n1 = q - p + 1;
+  n1 = q - p+1;
   n2 = r - q;
   let L = [];
   let R = [];
-  for(i=0; i<n1; i++) {
+  for(i = 0; i < n1; i++)
     L[i] = a[p+i];
-  }
-  for(j=0; j<n2; j++) {
+  for(j = 0; j < n2; j++)
     R[j] = a[q+j+1];
-  }
+
   L[n1] = Infinity;
   R[n2] = Infinity;
   i = 0;
   j = 0;
-  for(k=p; k<=r; k++) {
+
+  for(k = p; k <= r; k++) {
     if(L[i] <= R[j]) {
       a[k] = L[i];
       i++;
@@ -137,7 +134,6 @@ function mergeSortCormen0(a, p, r) {
 function mergeSortCormen(a) {
   mergeSortCormen0(a, 0, a.length-1);
 }
-
 //----------------------------------------------------------
 
 // Quicksort [Cormen]
@@ -153,23 +149,23 @@ function quickSortCormen0(a, p, r) {
 function partitionCormen(a, p, r) {
   x = a[r];
   i = p-1;
-  for(j=p; j<r; j++) {
+  for(j = p; j < r; j++)
     if(a[j] <= x) {
       i = i+1;
       temp = a[i];
       a[i] = a[j];
       a[j] = temp;
     }
-  }
+  
   temp = a[i+1];
   a[i+1] = a[r];
   a[r] = temp;
+
   return i+1;
 }
 function quickSortCormen(a) {
   quickSortCormen0(a, 0, a.length-1);
 }
-
 //----------------------------------------------------------
 
 // Randomized Quicksort [Cormen]
@@ -180,6 +176,7 @@ function randomizedPartitionCormen(a, p, r) {
   temp = a[i];
   a[i] = a[r];
   a[r] = temp;
+
   return partitionCormen(a, p, r);
 }
 function randomizedQuickSortCormen0(a, p, r) {
@@ -193,7 +190,6 @@ function randomizedQuickSortCormen0(a, p, r) {
 function randomizedQuickSortCormen(a) {
   randomizedQuickSortCormen0(a, 0, a.length-1)
 }
-
 //----------------------------------------------------------
 
 // Native JS array sort

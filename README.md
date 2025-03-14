@@ -30,9 +30,6 @@ SortSpeed/
 │   └── style.css       # Styling and responsive design
 ├── JavaScript/
 │   ├── script.js       # Test logic
-│   └── algorithms.js   # Sorting algorithms
-└── images/
-    └── favicon.png     # Site icon
 ```
 
 ## 📊 Implemented Algorithms

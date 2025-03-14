@@ -29,7 +29,7 @@ SortSpeed/
 ├── CSS/
 │   └── style.css       # Styling and responsive design
 ├── JavaScript/
-│   ├── script.js       # Test logic
+│   └── script.js       # Test logic
 ```
 
 ## 📊 Implemented Algorithms

@@ -1,0 +1,53 @@
+body {
+	background-color: #f0f0f0;
+	font-size: 36px;
+	font-family: cursive;
+	text-align: center;
+
+	/* Flexbox for centering the .Neum div */
+	display: flex;
+	flex-direction: column;     /* Stack Column */
+	justify-content: center;    /* Center vertically */
+	align-items: center;        /* Center horizontally */
+	height: 100vh;              /* Full viewport height to center vertically */
+	margin: 0;                  /* Remove default margin */
+}
+h1 {
+	margin-bottom: 40px;        /* Add some space below the h1 */
+	color: green;
+}
+
+.Neum {
+	width: fit-content;
+	height: fit-content;
+	border-radius: 28px;
+	background: linear-gradient(145deg, #f0f0f0, #cacaca);
+	box-shadow: 28px 28px 56px #9f9f9f, -28px -28px 56px #ffffff;
+
+	/* Center content inside the box */
+	display: flex;
+	justify-content: center;    /* Center content horizontally */
+	align-items: center;        /* Center content vertically */
+}
+.LeftSide {
+	margin-bottom: 20px; /* Add space between the divs */
+}
+.RightSide {
+	margin-top: 20px; /* Add space between the divs */
+}
+
+/* Media Query for Tablet/Desktop */
+@media (min-width: 768px) { 
+	body {
+		flex-direction: row;
+	}
+
+	.LeftSide {
+		margin-bottom: 0;
+		margin-right: 20px;
+	}
+	.RightSide {
+		margin-top: 0;
+		margin-left: 20px;
+	}
+}

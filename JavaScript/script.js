@@ -226,8 +226,8 @@ time(quickSortCormen);
 
 console.log("Test time: Randomized Quick Sort Cormen");
 time(randomizedQuickSortCormen);
+*/
 
 console.log("Test time: Native Sort");
 time(nativeSort);
-*/
 //----------------------------------------------------------
